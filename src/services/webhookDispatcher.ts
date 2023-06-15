@@ -14,14 +14,18 @@ export class WebhookDispatcher implements ActionDispatcher {
         await this.execute(payload, hookConfig, entityType);
     }
 
-    public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<void> {
+    public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<any> {
         const requestInit = this.constructHookRequest(payload, webhookConfig);
         const response = await fetch(webhookConfig.endpoint, requestInit as any);
         const successCode = webhookConfig.successCodes.length ? webhookConfig.successCodes : [200, 201, 202];
 
         if (!successCode.includes(response.status)) {
-            throw new Error(`Hook failed with status code ${response.status}`);
+            const err = new Error(`Hook failed with status code ${response.status}`);
+            (err as any).statusCode = response.status;
+            throw err;
         }
+
+        return response.status;
     }
 
     private constructHookRequest(payload: object, webhookConfig: WebhookConfig): RequestInit {
