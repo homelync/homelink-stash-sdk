@@ -1,0 +1,1 @@
+export type AuthenticationType = 'none' | 'basic' | 'apiKey' | 'basic' | 'bearer';
