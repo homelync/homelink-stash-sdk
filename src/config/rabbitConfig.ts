@@ -14,7 +14,7 @@ export interface RabbitHostConfig {
     username?: string;
     password?: string;
     tls?: boolean;
-    publishTimeoutMs: number;
+    publishTimeoutMs?: number;
 }
 
 export interface RabbitPublishConfig {

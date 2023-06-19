@@ -12,15 +12,7 @@ export class RabbitPublisherService implements IRabbitPublisherService {
     private channel: ChannelWrapper;
 
     constructor(hostConfig: RabbitHostConfig, private logger: ILogger, connectionManager: RabbitConnectionManager) {
-        let host = hostConfig.port
-            ? `${hostConfig.host}:${hostConfig.port}`
-            : hostConfig.host;
-
-        if (hostConfig.vhost) {
-            host = `${host}/${hostConfig.vhost}`;
-        }
-
-        this.channel = connectionManager.connection.createChannel({ publishTimeout: 5000, confirm: false });
+        this.channel = connectionManager.connection.createChannel({ publishTimeout: hostConfig.publishTimeoutMs || 2000, confirm: false });
     }
 
     public async publish(message: DataForwardResult, publishConfig: RabbitPublishConfig) {
