@@ -1,4 +1,4 @@
-import { EntityType } from "./entities";
+import { EntityType } from './entities';
 
 export interface ILogger {
     timing(name: string, value: number, eventId: number, context?: string, method?: string): void;
