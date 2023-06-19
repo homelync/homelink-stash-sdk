@@ -12,3 +12,4 @@ export { EntityType } from './types/entities';
 export { ILogger } from './types/logging';
 export { RabbitPublisherService } from './services/rabbitmq/rabbitPublisherService';
 export { RabbitConnectionManager } from './services/rabbitmq/rabbitConnectionManager';
+export { getDescriptionForMessage } from './utils/loggingUtils';
