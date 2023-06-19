@@ -6,7 +6,9 @@ import fetch from 'node-fetch';
 
 export class WebhookDispatcher implements ActionDispatcher {
 
+    private readonly timeoutMs: number;
     constructor(private config: Config) {
+        this.timeoutMs = this.config.httpTimeout || 2000;
     }
 
     public async dispatch(payload: object, entityType: EntityType): Promise<void> {
@@ -16,7 +18,15 @@ export class WebhookDispatcher implements ActionDispatcher {
 
     public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<any> {
         const requestInit = this.constructHookRequest(payload, webhookConfig);
-        const response = await fetch(webhookConfig.endpoint, requestInit as any);
+        let response: any = null;
+        try {
+            response = await fetch(webhookConfig.endpoint, requestInit as any);
+        }
+        catch (error) {
+            const err = new Error(`Request client timeout. API took longer than ${this.timeoutMs}ms to respond. Aborting.`);
+            (err as any).statusCode = 408;
+        }
+
         const successCode = webhookConfig.successCodes.length ? webhookConfig.successCodes : [200, 201, 202];
 
         if (!successCode.includes(response.status)) {
@@ -49,7 +59,8 @@ export class WebhookDispatcher implements ActionDispatcher {
         const requestInit: RequestInit = {
             method: webhookConfig.method,
             body: JSON.stringify(payload),
-            headers: headers
+            headers: headers,
+            signal: AbortSignal.timeout(this.timeoutMs)
         };
 
         return requestInit;

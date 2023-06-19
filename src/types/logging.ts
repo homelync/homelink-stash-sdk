@@ -1,3 +1,4 @@
+import { EntityType } from "./entities";
 
 export interface ILogger {
     timing(name: string, value: number, eventId: number, context?: string, method?: string): void;
@@ -7,4 +8,17 @@ export interface ILogger {
     error(message: string, data: any, eventId?: number, tag?: string): void;
     verbose(message: string, data: any, eventId?: number, tag?: string): void;
     debug(message: string, data: any, eventId?: number, tag?: string): void;
+}
+
+export interface DataForwardRecord {
+    registrationId: number;
+    entityType: EntityType;
+    __IDENTITY: string;
+    action: string;
+    description: string;
+    statusCode: string;
+    success: boolean;
+    errMessage: string;
+    executedAt: Date;
+    landlordReference: string;
 }

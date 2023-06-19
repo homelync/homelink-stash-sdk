@@ -14,6 +14,7 @@ export interface Config {
     enableDb: boolean;
     logging: LogConfig;
     sqlConfig: SqlConfig;
+    httpTimeout: number;
     plugins: PluginConfig[];
 }
 

@@ -16,3 +16,8 @@ export interface RabbitHostConfig {
     tls?: boolean;
     publishTimeoutMs: number;
 }
+
+export interface RabbitPublishConfig {
+    exchange: string;
+    topic: string;
+}
