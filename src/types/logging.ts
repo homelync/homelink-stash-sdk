@@ -16,7 +16,7 @@ export interface DataForwardRecord {
     __IDENTITY: string;
     action: string;
     description: string;
-    statusCode: string;
+    statusCode: number;
     success: boolean;
     errMessage: string;
     executedAt: Date;
