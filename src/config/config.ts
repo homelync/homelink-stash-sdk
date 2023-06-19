@@ -26,4 +26,5 @@ export interface PluginConfig {
 export interface LogConfig {
     loglevel: string;
     human: boolean;
+    suppressRemote: boolean;
 }
