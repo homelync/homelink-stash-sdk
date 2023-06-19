@@ -4,7 +4,11 @@ import { RabbitConnectionManager } from './rabbitConnectionManager';
 import { RabbitHostConfig, RabbitPublishConfig } from '../../config/rabbitConfig';
 import { DataForwardResult, ILogger } from '../../types/logging';
 
-export class RabbitPublisherService {
+export interface IRabbitPublisherService {
+    publish(message: DataForwardResult, publishConfig: RabbitPublishConfig);
+}
+
+export class RabbitPublisherService implements IRabbitPublisherService {
     private channel: ChannelWrapper;
 
     constructor(hostConfig: RabbitHostConfig, private logger: ILogger, connectionManager: RabbitConnectionManager) {
