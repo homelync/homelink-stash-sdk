@@ -1,16 +1,13 @@
 import { ChannelWrapper } from 'amqp-connection-manager';
-import { connect as amqpConnect } from 'amqp-connection-manager';
 import { RabbitConnectionManager } from './rabbitConnectionManager';
 
 import { RabbitHostConfig, RabbitPublishConfig } from '../../config/rabbitConfig';
 import { DataForwardRecord, ILogger } from '../../types/logging';
 
 export class RabbitPublisherService {
-    private rabbitConnection: RabbitConnectionManager | null;
-    private ampqConnectionString: string;
     private channel: ChannelWrapper;
 
-    constructor(hostConfig: RabbitHostConfig, private logger: ILogger) {
+    constructor(hostConfig: RabbitHostConfig, private logger: ILogger, connectionManager: RabbitConnectionManager) {
         let host = hostConfig.port
             ? `${hostConfig.host}:${hostConfig.port}`
             : hostConfig.host;
@@ -19,19 +16,11 @@ export class RabbitPublisherService {
             host = `${host}/${hostConfig.vhost}`;
         }
 
-        const protocol = 'amqp';
-        if (hostConfig.username && hostConfig.password) {
-            this.ampqConnectionString = `${protocol}://${hostConfig.username}:${hostConfig.password}@${host}`;
-        } else {
-            this.ampqConnectionString = `${protocol}://${host}`;
-        }
-
-        this.rabbitConnection = new RabbitConnectionManager(amqpConnect([this.ampqConnectionString]), this.ampqConnectionString, this.logger);
-        this.channel = this.rabbitConnection.connection.createChannel({ publishTimeout: 5000, confirm: false });
+        this.channel = connectionManager.connection.createChannel({ publishTimeout: 5000, confirm: false });
     }
 
     public async publish(message: DataForwardRecord, publishConfig: RabbitPublishConfig) {
-        this.publishToChannel(this.channel, message, publishConfig);
+        await this.publishToChannel(this.channel, message, publishConfig);
     }
 
     private async publishToChannel(channel: ChannelWrapper, message: any, publishConfig: RabbitPublishConfig) {
