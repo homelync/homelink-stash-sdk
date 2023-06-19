@@ -10,3 +10,5 @@ export { ActionDispatcher } from './types/actions';
 export { AuthenticationType } from './types/authentication';
 export { EntityType } from './types/entities';
 export { ILogger } from './types/logging';
+export { RabbitPublisherService } from './services/rabbitmq/rabbitPublisherService';
+export { RabbitConnectionManager } from './services/rabbitmq/rabbitConnectionManager';
