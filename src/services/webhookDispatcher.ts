@@ -3,11 +3,12 @@ import { WebhookConfig } from '../config/webhookConfig';
 import { ActionDispatcher } from '../types/actions';
 import { EntityType } from '../types/entities';
 import fetch from 'node-fetch';
+import { ILogger } from '../types/logging';
 
 export class WebhookDispatcher implements ActionDispatcher {
 
     private readonly timeoutMs: number;
-    constructor(private config: Config) {
+    constructor(private config: Config, private logger: ILogger) {
         this.timeoutMs = this.config.httpTimeout || 2000;
     }
 
@@ -21,10 +22,14 @@ export class WebhookDispatcher implements ActionDispatcher {
         let response: any = null;
         try {
             response = await fetch(webhookConfig.endpoint, requestInit as any);
-        }
-        catch (error) {
-            const err = new Error(`Request client timeout. API took longer than ${this.timeoutMs}ms to respond. Aborting.`);
-            (err as any).statusCode = 408;
+        } catch (err) {
+            const msg = `Request client timeout. API took longer than ${this.timeoutMs}ms to respond. Aborting.`;
+
+            this.logger.error(msg, err);
+
+            const error = new Error(msg);
+            (error as any).statusCode = 408;
+            throw error;
         }
 
         const successCode = webhookConfig.successCodes.length ? webhookConfig.successCodes : [200, 201, 202];
