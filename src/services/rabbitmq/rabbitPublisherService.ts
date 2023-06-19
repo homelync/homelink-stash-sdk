@@ -2,7 +2,7 @@ import { ChannelWrapper } from 'amqp-connection-manager';
 import { RabbitConnectionManager } from './rabbitConnectionManager';
 
 import { RabbitHostConfig, RabbitPublishConfig } from '../../config/rabbitConfig';
-import { DataForwardRecord, ILogger } from '../../types/logging';
+import { DataForwardResult, ILogger } from '../../types/logging';
 
 export class RabbitPublisherService {
     private channel: ChannelWrapper;
@@ -19,7 +19,7 @@ export class RabbitPublisherService {
         this.channel = connectionManager.connection.createChannel({ publishTimeout: 5000, confirm: false });
     }
 
-    public async publish(message: DataForwardRecord, publishConfig: RabbitPublishConfig) {
+    public async publish(message: DataForwardResult, publishConfig: RabbitPublishConfig) {
         await this.publishToChannel(this.channel, message, publishConfig);
     }
 

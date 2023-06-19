@@ -10,7 +10,7 @@ export interface ILogger {
     debug(message: string, data: any, eventId?: number, tag?: string): void;
 }
 
-export interface DataForwardRecord {
+export interface DataForwardResult {
     registrationId: number;
     entityType: EntityType;
     __IDENTITY: string;
