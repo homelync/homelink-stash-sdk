@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@types/amqplib": "^0.10.1",
+    "inversify": "^5.0.1",
     "amqp-connection-manager": "4.1.10",
     "amqplib": "^0.8.0",
     "node-fetch": "^2.3.0"

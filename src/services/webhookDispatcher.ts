@@ -13,12 +13,12 @@ export class WebhookDispatcher implements ActionDispatcher {
         this.timeoutMs = this.config.httpTimeout || 2000;
     }
 
-    public async dispatch(payload: object, entityType: EntityType): Promise<void> {
+    public async dispatch(payload: object, entityType: EntityType): Promise<number> {
         const hookConfig = this.config[entityType].hook;
-        await this.execute(payload, hookConfig, entityType);
+        return await this.execute(payload, hookConfig, entityType);
     }
 
-    public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<any> {
+    public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<number> {
 
         const abortSignal = AbortSignal.timeout(this.timeoutMs);
 

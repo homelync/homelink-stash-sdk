@@ -15,3 +15,4 @@ export { RabbitConnectionManager } from './services/rabbitmq/rabbitConnectionMan
 export { getDescriptionForMessage } from './utils/loggingUtils';
 export { NoopRabbitPublisherService } from './services/rabbitmq/noopRabbitPublisherService';
 export { StatusCode } from './types/statusCode';
+export { PluginRegistration } from './types/registration';
