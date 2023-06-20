@@ -6,6 +6,7 @@ export interface IRabbitPublisherService {
 }
 
 export class NoopRabbitPublisherService implements IRabbitPublisherService {
+    // tslint:disable-next-line
     public async publish(message: DataForwardResult, publishConfig: RabbitPublishConfig) {
     }
 }

@@ -4,6 +4,7 @@ import { ActionDispatcher } from '../types/actions';
 import { EntityType } from '../types/entities';
 import fetch from 'node-fetch';
 import { ILogger } from '../types/logging';
+import { StatusCode } from '../types/statusCode';
 
 export class WebhookDispatcher implements ActionDispatcher {
 
@@ -18,18 +19,34 @@ export class WebhookDispatcher implements ActionDispatcher {
     }
 
     public async execute(payload: object, webhookConfig: WebhookConfig, entityType: EntityType): Promise<any> {
-        const requestInit = this.constructHookRequest(payload, webhookConfig);
+
+        const abortSignal = AbortSignal.timeout(this.timeoutMs);
+
+        const requestInit = this.constructHookRequest(payload, webhookConfig, abortSignal);
         let response: any = null;
+
+        const start = new Date();
+
         try {
             response = await fetch(webhookConfig.endpoint, requestInit as any);
-        } catch (err) {
-            const msg = `Request client timeout. API took longer than ${this.timeoutMs}ms to respond. Aborting.`;
+        } catch (err: any) {
+
+            let msg = err.messsage;
+            let statusCode = StatusCode.failure;
+
+            if (abortSignal.aborted) {
+                msg = `Client timeout. API took longer than ${this.timeoutMs}ms to respond. Aborting.`;
+                statusCode = StatusCode.clientTimeout;
+            }
 
             this.logger.error(msg, err);
-
             const error = new Error(msg);
-            (error as any).statusCode = 408;
+            (error as any).statusCode = statusCode;
+
             throw error;
+        } finally {
+            const end = new Date();
+            this.logger.debug(`Fetch request took ${end.getTime() - start.getTime()}ms`, webhookConfig);
         }
 
         const successCode = webhookConfig.successCodes.length ? webhookConfig.successCodes : [200, 201, 202];
@@ -43,7 +60,7 @@ export class WebhookDispatcher implements ActionDispatcher {
         return response.status;
     }
 
-    private constructHookRequest(payload: object, webhookConfig: WebhookConfig): RequestInit {
+    private constructHookRequest(payload: object, webhookConfig: WebhookConfig, abortSignal: AbortSignal): RequestInit {
 
         const headers = {} as any;
         headers['content-type'] = 'application/json';
@@ -65,7 +82,7 @@ export class WebhookDispatcher implements ActionDispatcher {
             method: webhookConfig.method,
             body: JSON.stringify(payload),
             headers: headers,
-            signal: AbortSignal.timeout(this.timeoutMs)
+            signal: abortSignal
         };
 
         return requestInit;
