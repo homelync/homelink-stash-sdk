@@ -1,6 +1,6 @@
 {
   "name": "homelink-stash-sdk",
-  "version": "0.0.16",
+  "version": "0.0.15",
   "description": "",
   "repository": {
     "type": "git+https",
@@ -13,7 +13,7 @@
     "lint": "tslint -c \"./tslint.json\" -p \"./tsconfig.json\"",
     "link": "npm run build && npm link ./dist",
     "clean": "rimraf ./dist",
-    "tag": "git tag v$npm_package_version && git push origin v$npm_package_version",
+    "tag": "git push origin v$npm_package_version",
     "publishPackage": "npm version patch -m \"Bump to version %s\" && npm run tag && git push origin master && npm run build && cd dist && npm publish"
   },
   "author": "",
