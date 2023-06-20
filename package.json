@@ -14,7 +14,7 @@
     "link": "npm run build && npm link ./dist",
     "clean": "rimraf ./dist",
     "tag": "git push origin v$npm_package_version",
-    "publishPackage": "npm version patch -m \"Bump to version %s\" && npm run tag && git push origin master && npm run build && cd dist && npm publish"
+    "publishPackage": "npm version patch -m \"$(git log -1 --pretty=%B) %s\" && npm run tag && git push origin master && npm run build && cd dist && npm publish"
   },
   "author": "",
   "license": "ISC",
