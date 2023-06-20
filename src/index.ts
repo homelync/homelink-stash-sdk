@@ -14,3 +14,4 @@ export { RabbitPublisherService } from './services/rabbitmq/rabbitPublisherServi
 export { RabbitConnectionManager } from './services/rabbitmq/rabbitConnectionManager';
 export { getDescriptionForMessage } from './utils/loggingUtils';
 export { NoopRabbitPublisherService } from './services/rabbitmq/noopRabbitPublisherService';
+export { StatusCode } from './types/statusCode';
