@@ -9,7 +9,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "build": "rimraf ./dist/node_modules && tsc && cp -R node_modules ./dist/node_modules && cp package.json ./dist/package.json && cp README.md ./dist/README.md",
+    "build": "npm run clean && tsc && cp -R node_modules ./dist/node_modules && cp package.json ./dist/package.json && cp README.md ./dist/README.md",
     "lint": "tslint -c \"./tslint.json\" -p \"./tsconfig.json\"",
     "link": "npm run build && npm link ./dist",
     "unlink": "npm unlink ./dist",
