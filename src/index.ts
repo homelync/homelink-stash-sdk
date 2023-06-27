@@ -16,3 +16,15 @@ export { getDescriptionForMessage } from './utils/loggingUtils';
 export { NoopRabbitPublisherService } from './services/rabbitmq/noopRabbitPublisherService';
 export { StatusCode } from './types/statusCode';
 export { PluginRegistration } from './types/registration';
+export {
+    StashSettings,
+    EntitiesSettings,
+    PluginSettings,
+    EntitySettings,
+    WebhookSettings,
+    SqlSettings,
+    SnsSettings,
+    SystemSettings,
+    BrokerSettings,
+    LoggingSettings
+} from './config/settings'

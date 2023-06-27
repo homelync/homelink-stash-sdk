@@ -1,3 +1,4 @@
+import { AuthenticationType } from "../types/authentication";
 import { SqlDialect } from "./sqlConfig";
 
 export class LoggingSettings {
@@ -31,8 +32,6 @@ export class SqlSettings {
     public timezone: string = '+00:00';
 }
 
-export type AuthenticationType = 'none' | 'basic' | 'apiKey' | 'bearer';
-
 export class WebhookSettings {
     public endpoint: string = '';
     public authenticationMethod: AuthenticationType = 'none';
@@ -62,7 +61,7 @@ export interface PluginSettings {
     settings: any;
 }
 
-export class Settings {
+export class StashSettings {
     public landlordReference: string = '';
     public password: string = '';
     public entities: EntitiesSettings = new EntitiesSettings();
