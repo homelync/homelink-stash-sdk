@@ -1,4 +1,5 @@
 import { AuthenticationType } from "../types/authentication";
+import { EntityType } from "../types/entities";
 import { SqlDialect } from "./sqlConfig";
 
 export class LoggingSettings {
@@ -30,6 +31,10 @@ export class SqlSettings {
     public port: number = 3306;
     public database: string = 'integration';
     public timezone: string = '+00:00';
+
+    public isEmpty() {
+        return !this.host && !this.password && !this.user && !this.port && !this.database && !this.dialect;
+    }
 }
 
 export class WebhookSettings {
@@ -59,6 +64,11 @@ export class EntitiesSettings {
 export interface PluginSettings {
     name: string;
     settings: any;
+}
+
+export interface NamedEntitySettings {
+    name: EntityType;
+    settings: EntitySettings;
 }
 
 export class StashSettings {
