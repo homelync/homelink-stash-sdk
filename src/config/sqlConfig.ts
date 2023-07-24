@@ -1,5 +1,5 @@
 
-export type SqlDialect = 'mysql' | 'mssql' | 'pg';
+export type SqlDialect = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle';
 
 export interface SqlConfig {
     dialect: SqlDialect;
