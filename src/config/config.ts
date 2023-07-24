@@ -3,6 +3,7 @@ import { RabbitHostConfig } from './rabbitConfig';
 import { SqlConfig } from './sqlConfig';
 
 export interface Config {
+
     environment: string;
     isDocker: boolean;
     device: EntityConfig;
@@ -16,6 +17,7 @@ export interface Config {
     sqlConfig: SqlConfig;
     httpTimeout: number;
     plugins: PluginConfig[];
+    awsRegion: string;
 }
 
 export interface PluginConfig {
